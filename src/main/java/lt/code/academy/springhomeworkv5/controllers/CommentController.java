@@ -29,7 +29,6 @@ public class CommentController {
         if (!comment.getBody().equals("")) {
             Account account = accountService.findOneByUsername("user");
             comment.setAccountId(account.getId());
-
             commentService.saveComment(comment);
         }
 
@@ -46,8 +45,12 @@ public class CommentController {
 
     @PostMapping("/editcomment")
     public String editComment(Comment comment) {
+        UUID postId = comment.getPostId();
+        if (comment.getBody().isBlank()) {
+            commentService.deleteCommentById(comment.getId());
+            return "redirect:/posts/" + postId;
+        }
         comment.setUpdatedAt(LocalDateTime.now());
-        Comment test = comment;
 
         commentService.saveComment(comment);
 

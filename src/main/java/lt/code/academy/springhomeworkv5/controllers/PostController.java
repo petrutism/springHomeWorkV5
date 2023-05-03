@@ -76,7 +76,7 @@ public class PostController {
         return "redirect:/home";
     }
 
-    @GetMapping("/editpost")
+    @PostMapping("/openeditpost")
     public String editPost(Model model, Post post) {
         Account account = accountService.findOneByUsername("user");
         List<Comment> postComments = commentService.findAllCommentsByPostId(post.getId());

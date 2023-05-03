@@ -31,9 +31,9 @@
         <div class="btn-group" role="group" aria-label="Basic example">
 
             <form
-                    th:action="@{/editpost}"
+                    th:action="@{/openeditpost}"
                     th:object="${post}"
-                    method="GET">
+                    method="POST">
                 <input type="hidden" th:field="*{id}"/>
                 <input type="hidden" th:field="*{title}"/>
                 <input type="hidden" th:field="*{body}"/>
@@ -41,7 +41,6 @@
                 <input type="hidden" th:field="*{updatedAt}"/>
                 <input type="hidden" th:field="*{accountId}"/>
                 <input type="hidden" th:field="*{username}"/>
-
                 <button type="submit" class="btn btn-primary btn-sm">Edit Post</button>
             </form>
 
@@ -81,6 +80,7 @@
                      aria-label="Basic example">
                     <div>
                         <!-- Button trigger modal -->
+                        <!--th:attr="data-bs-target=${comment.id}";-->
                         <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal"
                                 data-bs-target="#editComment"
                                 th:data-bs-comment-id="${comment.id}"
@@ -94,6 +94,7 @@
                             Edit comment:
                         </button>
                         <!-- Modal -->
+<!--                        th:id="${comment.id}}"-->
                         <form class="modal fade" id="editComment" tabindex="-1" aria-labelledby="exampleModalLabel"
                               aria-hidden="true"
                               th:action="@{/editcomment}"

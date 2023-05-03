@@ -25,29 +25,92 @@
           th:action="@{/register}"
           th:object="${account}"
           method="POST">
+<!--        <div class="mb-3">-->
+<!--            <label for="name" class="form-label">Name:</label>-->
+<!--            <input type="text" th:field="*{name}" class="form-control" id="name" aria-describedby="nameHelp">-->
+<!--            <div id="nameHelp" class="form-text">Enter your first name, it's fine...</div>-->
+<!--            <span th:if="${#fields.hasErrors()}" th:errors="*{name}"></span>-->
+<!--        </div>-->
         <div class="mb-3">
-            <label for="name" class="form-label">Name:</label>
-            <input type="text" th:field="*{name}" class="form-control" id="name" aria-describedby="nameHelp">
-            <div id="nameHelp" class="form-text">Enter your first name, it's fine...</div>
-        </div>
-        <div class="mb-3">
-            <label for="surname" class="form-label">Surname:</label>
-            <input type="text" th:field="*{surname}" class="form-control" id="surname" aria-describedby="surnameHelp">
-            <div id="surnameHelp" class="form-text">Enter your surname...</div>
-        </div>
-        <div class="mb-3">
-            <label for="username" class="form-label">Username:</label>
-            <input type="text" th:field="*{username}" class="form-control" id="username"
-                   aria-describedby="usernameHelp">
-            <div id="usernameHelp" class="form-text">Enter your username here...</div>
-        </div>
-        <div class="mb-3">
-            <label for="password" class="form-label">Password:</label>
-            <input type="password" th:field="*{password}" class="form-control" id="password"
-                   aria-describedby="passwordHelp">
-            <div id="passwordHelp" class="form-text">Enter your password here and do not tell it to anyone...</div>
+            <label for="name"
+                   class="form-label">Enter Your Name:</label>
+            <input type="text"
+                   class="form-control"
+                   id="name"
+                   aria-describedby="nameFeedback"
+                   th:classappend="${#fields.hasErrors('name')} ? 'is-invalid' : (${account.name ne null}? 'is-valid': '')"
+                   th:field="*{name}" required>
+            <div id="nameFeedback"
+                 class="invalid-feedback"
+                 th:if="${#fields.hasErrors('name')}"
+                 th:errors="*{name}">
+            </div>
         </div>
 
+
+<!--        <div class="mb-3">-->
+<!--            <label for="surname" class="form-label">Surname:</label>-->
+<!--            <input type="text" th:field="*{surname}" class="form-control" id="surname" aria-describedby="surnameHelp">-->
+<!--            <div id="surnameHelp" class="form-text">Enter your surname...</div>-->
+<!--        </div>-->
+        <div class="mb-3">
+            <label for="surname"
+                   class="form-label">Enter Your Surname:</label>
+            <input type="text"
+                   class="form-control"
+                   id="surname"
+                   aria-describedby="surnameFeedback"
+                   th:classappend="${#fields.hasErrors('surname')} ? 'is-invalid' : (${account.surname ne null}? 'is-valid': '')"
+                   th:field="*{surname}" required>
+            <div id="surnameFeedback"
+                 class="invalid-feedback"
+                 th:if="${#fields.hasErrors('surname')}"
+                 th:errors="*{surname}">
+            </div>
+        </div>
+<!--        <div class="mb-3">-->
+<!--            <label for="username" class="form-label">Username:</label>-->
+<!--            <input type="text" th:field="*{username}" class="form-control" id="username"-->
+<!--                   aria-describedby="usernameHelp">-->
+<!--            <div id="usernameHelp" class="form-text">Enter your username here...</div>-->
+<!--        </div>-->
+        <div class="mb-3">
+            <label for="username"
+                   class="form-label">Enter Your Username:</label>
+            <input type="text"
+                   class="form-control"
+                   id="username"
+                   aria-describedby="usernameFeedback"
+                   th:classappend="${#fields.hasErrors('username')} ? 'is-invalid' : (${account.username ne null}? 'is-valid': '')"
+                   th:field="*{username}" required>
+            <div id="usernameFeedback"
+                 class="invalid-feedback"
+                 th:if="${#fields.hasErrors('username')}"
+                 th:errors="*{username}">
+            </div>
+        </div>
+
+<!--        <div class="mb-3">-->
+<!--            <label for="password" class="form-label">Password:</label>-->
+<!--            <input type="password" th:field="*{password}" class="form-control" id="password"-->
+<!--                   aria-describedby="passwordHelp">-->
+<!--            <div id="passwordHelp" class="form-text">Enter your password here and do not tell it to anyone...</div>-->
+<!--        </div>-->
+        <div class="mb-3">
+            <label for="password"
+                   class="form-label">Enter Your Password:</label>
+            <input type="password"
+                   class="form-control"
+                   id="password"
+                   aria-describedby="passwordFeedback"
+                   th:classappend="${#fields.hasErrors('password')} ? 'is-invalid' : (${account.password ne null}? 'is-valid': '')"
+                   th:field="*{password}" required>
+            <div id="passwordFeedback"
+                 class="invalid-feedback"
+                 th:if="${#fields.hasErrors('password')}"
+                 th:errors="*{password}">
+            </div>
+        </div>
         <button type="submit" class="btn btn-primary">Register!</button>
 
     </form>
