@@ -26,12 +26,10 @@ public class RegisterController {
     }
 
     @PostMapping("/register")
-    public String registerNewUser(@Valid Account account, BindingResult bindingResult, Model model) {
+    public String registerNewUser(@Valid Account account, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "register";
         }
-
-        //        model.addAttribute("account", account);
         String messageKey = "lt.code.academy.blog.account.create.success.message";
         accountService.saveAccount(account);
 

@@ -49,6 +49,7 @@ public class GenerateData implements CommandLineRunner {
                     - Kalbėt tai aš moku. O tu, dūra, skraidyt moki?""");
 
             post1.setAccountId(savedUser.getId());
+            post1.setUsername(savedUser.getUsername());
             Post savedPost1 = postService.savePost(post1);
 
             Post post2 = new Post();
@@ -58,6 +59,7 @@ public class GenerateData implements CommandLineRunner {
                     - Senute, jūs nėščia! Kaip jūsų amžiaus moteriškė...?
                     - Vis tie paaugliai. Viską jiems papasakok, viską jiems parodyk, duok pabandyt...""");
             post2.setAccountId(savedAdmin.getId());
+            post2.setUsername(savedAdmin.getUsername());
             Post savedPost2 = postService.savePost(post2);
 
             Comment comment1 = new Comment();

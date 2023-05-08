@@ -36,6 +36,8 @@ public class PostEntity {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "account_id")
     private AccountEntity account;
+    private String username;
+    private int totalComments;
 
     public static PostEntity convert(Post post, AccountService accountService) {
         AccountEntity account = AccountEntity.convert(accountService.findAccountById(post.getAccountId()));
@@ -45,7 +47,9 @@ public class PostEntity {
                 post.getBody(),
                 post.getCreatedAt(),
                 post.getUpdatedAt(),
-                account
+                account,
+                account.getUsername(),
+                post.getTotalComments()
         );
     }
 }

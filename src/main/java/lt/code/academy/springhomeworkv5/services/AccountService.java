@@ -24,7 +24,6 @@ public class AccountService {
     }
 
     public Account saveAccount(Account account) {
-
         return Account.convert(accountRepository.save(AccountEntity.convert(account)));
     }
 

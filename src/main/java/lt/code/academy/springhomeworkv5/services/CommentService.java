@@ -22,17 +22,15 @@ public class CommentService {
         this.postService = postService;
     }
 
-    public Comment saveComment(Comment comment) {
+    public void saveComment(Comment comment) {
+        Post post = postService.findPostById(comment.getPostId());
+        int commentCount = post.getTotalComments();
         if (comment.getCreatedAt() == null) {
             comment.setCreatedAt(LocalDateTime.now());
+            post.setTotalComments(commentCount + 1);
         }
-        return Comment.convert(commentRepository.save(CommentEntity.convert(comment, accountService, postService)));
-    }
-
-    public List<Comment> getAllComments() {
-        return commentRepository.findAll().stream()
-                .map(Comment::convert)
-                .toList();
+        postService.savePost(post);
+        commentRepository.save(CommentEntity.convert(comment, accountService, postService));
     }
 
     public Comment findCommentById(UUID id) {
@@ -55,7 +53,11 @@ public class CommentService {
         }
     }
 
-    public void deleteCommentById(UUID id){
+    public void deleteCommentById(UUID id) {
+        Post post = postService.findPostById(findCommentById(id).getPostId());
+        int commentCount = post.getTotalComments();
+        post.setTotalComments(commentCount - 1);
+        postService.savePost(post);
         commentRepository.deleteById(id);
     }
 }
