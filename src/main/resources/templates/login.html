@@ -5,32 +5,41 @@
 <div class="container">
     <div class="flex-container"
          style="display:flex; height:800px; align-items: center; justify-content: center">
-
         <div class="col-5">
-            <h4 th:text="${message} ? ${message} : 'Login:'"></h4>
+            <h4 th:text="${message} ? ${message} : #{lt.code.academy.blog.login.annotation}"></h4>
             <div th:if="${param.error ne null}"
                  class="mb-3 alert alert-danger"
-                 role="alert">
-                Please check out your credentials and try again!
+                 role="alert"
+                 th:text="#{lt.code.academy.blog.login.wrong.credentials}">
             </div>
-            <form
-                    th:action="@{/login}"
-                    method="POST">
+            <form th:action="@{/login}"
+                  method="POST">
                 <div class="mb-3">
-                    <label for="username" class="form-label">Username:</label>
+                    <label for="username"
+                           class="form-label"
+                           th:text="#{lt.code.academy.blog.login.username.field.label}"></label>
                     <input type="text" class="form-control" name="customUsername" id="username"
                            aria-describedby="usernameHelp">
-                    <div id="usernameHelp" class="form-text">Enter your username here...</div>
+                    <div id="usernameHelp"
+                         class="form-text"
+                         th:text="#{lt.code.academy.blog.login.username.help}"></div>
                 </div>
                 <div class="mb-3">
-                    <label for="password" class="form-label">Password:</label>
-                    <input type="password" class="form-control" name="customPassword" id="password"
+                    <label for="password"
+                           class="form-label"
+                           th:text="#{lt.code.academy.blog.login.password.field.label}"></label>
+                    <input type="password"
+                           class="form-control"
+                           name="customPassword"
+                           id="password"
                            aria-describedby="passwordHelp">
-                    <div id="passwordHelp" class="form-text">Enter your password here and do not tell it to anyone...
-                    </div>
+                    <div id="passwordHelp"
+                         class="form-text"
+                         th:text="#{lt.code.academy.blog.login.password.help}"></div>
                 </div>
-
-                <button type="submit" class="btn btn-primary">Login!</button>
+                <button type="submit"
+                        class="btn btn-primary"
+                        th:text="#{lt.code.academy.blog.submit.button}"></button>
             </form>
 
         </div>
