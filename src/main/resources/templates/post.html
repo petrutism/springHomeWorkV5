@@ -46,7 +46,7 @@
                     <label for="new-comment-body"
                            class="form-label"
                            th:text="#{lt.code.academy.blog.post.write.new.comment.label}"></label>
-                    <textarea th:field="*{body}"
+                    <textarea th:field="*{body}" required
                               class="form-control"
                               id="new-comment-body"
                               aria-describedby="newCommentBodyHelp"

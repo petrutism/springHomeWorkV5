@@ -22,11 +22,12 @@ public class CommentController {
 
     @PostMapping("/newcomment")
     public String saveNewComment(Comment comment) {
-        if (!comment.getBody().equals("")) {
-            Account account = accountService.findOneByUsername("user");
-            comment.setAccountId(account.getId());
-            commentService.saveComment(comment);
+        if (comment.getBody() == null || comment.getBody().isBlank() || comment.getBody().isEmpty()) {
+            return "redirect:/post/" + comment.getPostId();
         }
+        Account account = accountService.findOneByUsername("user");
+        comment.setAccountId(account.getId());
+        commentService.saveComment(comment);
 
         return "redirect:/post/" + comment.getPostId();
     }

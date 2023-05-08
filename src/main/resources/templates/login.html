@@ -3,30 +3,37 @@
 <head th:replace="~{fragments/fragments::head(#{lt.code.academy.blog.login.title})}"></head>
 <body>
 <div class="container">
-    <h1>Spring HomeWork Application</h1>
-    <hr/>
-    <h2 th:text="${message} ? ${message} : 'Login:'"></h2>
     <div class="flex-container"
          style="display:flex; height:800px; align-items: center; justify-content: center">
 
-        <form class="col-5"
-              th:action="@{/login}"
-              method="POST">
-            <div class="mb-3">
-                <label for="username" class="form-label">Username:</label>
-                <input type="text" class="form-control" name="username" id="username" aria-describedby="usernameHelp">
-                <div id="usernameHelp" class="form-text">Enter your username here...</div>
+        <div class="col-5">
+            <h4 th:text="${message} ? ${message} : 'Login:'"></h4>
+            <div th:if="${param.error ne null}"
+                 class="mb-3 alert alert-danger"
+                 role="alert">
+                Please check out your credentials and try again!
             </div>
-            <div class="mb-3">
-                <label for="password" class="form-label">Password:</label>
-                <input type="password" class="form-control" name="password" id="password"
-                       aria-describedby="passwordHelp">
-                <div id="passwordHelp" class="form-text">Enter your password here and do not tell it to anyone...</div>
-            </div>
+            <form
+                    th:action="@{/login}"
+                    method="POST">
+                <div class="mb-3">
+                    <label for="username" class="form-label">Username:</label>
+                    <input type="text" class="form-control" name="customUsername" id="username"
+                           aria-describedby="usernameHelp">
+                    <div id="usernameHelp" class="form-text">Enter your username here...</div>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password:</label>
+                    <input type="password" class="form-control" name="customPassword" id="password"
+                           aria-describedby="passwordHelp">
+                    <div id="passwordHelp" class="form-text">Enter your password here and do not tell it to anyone...
+                    </div>
+                </div>
 
-            <button type="submit" class="btn btn-primary">Login!</button>
-        </form>
+                <button type="submit" class="btn btn-primary">Login!</button>
+            </form>
 
+        </div>
     </div>
 </div>
 <footer th:replace="~{fragments/fragments :: footer}"></footer>

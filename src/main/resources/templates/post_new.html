@@ -19,7 +19,7 @@
             <input type="hidden" th:field="*{createdAt}"/>
 
             <div th:replace="~{fragments/fragments :: inputWithError('title', #{lt.code.academy.blog.new.post.title.form.label}, ${post.title ne null}, 'text')}"></div>
-            <div th:replace="~{fragments/fragments :: textAreaWithError('body', #{lt.code.academy.blog.new.post.body.form.label}, ${post.body ne null}, 400)}"></div>
+            <div th:replace="~{fragments/fragments :: textAreaWithError('body', #{lt.code.academy.blog.new.post.body.form.label}, ${post.body ne null}, 300)}"></div>
 
             <button type="submit" class="btn btn-primary" th:text="#{lt.code.academy.blog.new.post.button.text}"></button>
 
