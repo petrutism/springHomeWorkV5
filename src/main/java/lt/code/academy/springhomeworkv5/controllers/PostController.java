@@ -48,7 +48,6 @@ public class PostController {
             return "404";
         }
     }
-
     @GetMapping("/newpost")
     public String createNewPost(Model model) {
         Account account = accountService.findOneByUsername("user");

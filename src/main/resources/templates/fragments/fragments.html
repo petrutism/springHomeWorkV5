@@ -44,7 +44,7 @@
                    class="btn btn-outline-danger"></a>
             </div>
             <div>
-                <img th:attr="src=@{'/flags/' + ${#locale} + '.png'}"
+                <img th:attr="src=@{'/images/' + ${#locale} + '.png'}"
                      style="height: 30px; margin-right: 10px">
             </div>
             <div class="col-2">
@@ -116,10 +116,10 @@
                      style="height: 80px"></a>
         </li>
     </ul>
-    <p class="text-center text-muted" th:text="#{lt.code.academy.home.work.blog.footer.funny.pig.text}"><span></span></p>
+    <p class="text-center text-muted" th:text="#{lt.code.academy.home.work.blog.footer.funny.pig.text}"><span></span>
+    </p>
     <script src="https://code.jquery.com/jquery-3.6.4.slim.min.js"></script>
     <script th:src="@{/js/language-switcher.js}"></script>
-    <script th:src="@{/js/editComment.js}"></script>
 </footer>
 
 </body>

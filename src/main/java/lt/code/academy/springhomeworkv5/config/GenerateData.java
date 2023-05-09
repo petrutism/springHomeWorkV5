@@ -7,6 +7,8 @@ import lt.code.academy.springhomeworkv5.services.AccountService;
 import lt.code.academy.springhomeworkv5.services.CommentService;
 import lt.code.academy.springhomeworkv5.services.PostService;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -26,6 +28,7 @@ public class GenerateData implements CommandLineRunner {
     @Override
     public void run(String... args) {
         List<Account> accounts = accountService.getAll();
+
         if (accounts.size() == 0) {
             Account user = new Account();
             user.setName("Jonas");

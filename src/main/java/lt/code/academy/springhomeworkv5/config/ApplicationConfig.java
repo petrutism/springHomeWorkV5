@@ -17,7 +17,7 @@ import java.util.Locale;
 public class ApplicationConfig implements WebMvcConfigurer {
 
     @Bean
-    public LocaleResolver localeResolver(){
+    public LocaleResolver localeResolver() {
         SessionLocaleResolver resolver = new SessionLocaleResolver();
         resolver.setDefaultLocale(Locale.ENGLISH);
         Locale.setDefault(Locale.ENGLISH);
@@ -25,14 +25,15 @@ public class ApplicationConfig implements WebMvcConfigurer {
     }
 
     @Bean
-    public LocaleChangeInterceptor localeChangeInterceptor(){
+    public LocaleChangeInterceptor localeChangeInterceptor() {
         LocaleChangeInterceptor interceptor = new LocaleChangeInterceptor();
         interceptor.setParamName("lang");
 
         return interceptor;
     }
+
     @Bean
-    public MessageSource messageSource(){
+    public MessageSource messageSource() {
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
         messageSource.setBasename("classpath:messages");
         messageSource.setDefaultEncoding("UTF-8");
@@ -46,10 +47,11 @@ public class ApplicationConfig implements WebMvcConfigurer {
         registry.addInterceptor(localeChangeInterceptor());
     }
 
-//    kol kas naudojamas login kontroleris
+    //    kol kas naudojamas login kontroleris
 //    @Override
 //    public void addViewControllers(ViewControllerRegistry registry) {
-//       registry.addViewController("/login").setViewName("/login");
+//        registry.addViewController("/login").setViewName("/login");
+//
 //    }
 
 }
