@@ -9,6 +9,14 @@
     <div class="row justify-content-center"
          style="margin-top: 50px">
         <h2 class="col-10" th:text="#{lt.code.academy.blog.new.account.annotation}"></h2>
+
+        <div th:if="${usernameRegistered}"
+             class="col-10 mb-3 alert alert-danger"
+             style="margin-top: 20px"
+             role="alert"
+             th:text="#{lt.code.academy.blog.new.account.username.used}">
+        </div>
+
         <form class="col-10"
               style="margin-top: 20px"
               th:action="@{/register}"
@@ -20,7 +28,8 @@
             <div th:replace="~{fragments/fragments :: inputWithError('username', #{lt.code.academy.blog.new.account.username.form.label}, ${account.username ne null}, 'text')}"></div>
             <div th:replace="~{fragments/fragments :: inputWithError('password', #{lt.code.academy.blog.new.account.password.form.label}, ${account.password ne null}, 'password')}"></div>
 
-            <button type="submit" class="btn btn-primary" th:text="#{lt.code.academy.blog.new.account.button.text}"></button>
+            <button type="submit" class="btn btn-primary"
+                    th:text="#{lt.code.academy.blog.new.account.button.text}"></button>
 
         </form>
     </div>

@@ -28,6 +28,7 @@ public class AccountService implements UserDetailsService {
     }
 
     public Account saveAccount(Account account) {
+
         return Account.convert(accountRepository.save(AccountEntity.convert(account)));
     }
 
@@ -42,7 +43,8 @@ public class AccountService implements UserDetailsService {
     }
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        AccountEntity accountEntity =  accountRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(String.format("User %s not found...", username)));
+        return Account.convert(accountEntity);
 
-        return accountRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(String.format("User %s not found...", username)));
     }
 }

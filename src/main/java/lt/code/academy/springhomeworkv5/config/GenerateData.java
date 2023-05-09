@@ -3,26 +3,29 @@ package lt.code.academy.springhomeworkv5.config;
 import lt.code.academy.springhomeworkv5.dto.Account;
 import lt.code.academy.springhomeworkv5.dto.Comment;
 import lt.code.academy.springhomeworkv5.dto.Post;
+import lt.code.academy.springhomeworkv5.dto.Role;
 import lt.code.academy.springhomeworkv5.services.AccountService;
 import lt.code.academy.springhomeworkv5.services.CommentService;
 import lt.code.academy.springhomeworkv5.services.PostService;
+import lt.code.academy.springhomeworkv5.services.RoleService;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Set;
 
 @Component
 public class GenerateData implements CommandLineRunner {
     private final AccountService accountService;
     private final PostService postService;
     private final CommentService commentService;
+    private final RoleService roleService;
 
-    public GenerateData(AccountService accountService, PostService postService, CommentService commentService) {
+    public GenerateData(AccountService accountService, PostService postService, CommentService commentService, RoleService roleService) {
         this.accountService = accountService;
         this.postService = postService;
         this.commentService = commentService;
+        this.roleService = roleService;
     }
 
     @Override
@@ -30,11 +33,20 @@ public class GenerateData implements CommandLineRunner {
         List<Account> accounts = accountService.getAll();
 
         if (accounts.size() == 0) {
+            Role userRole = new Role();
+            userRole.setName("USER");
+            Role adminRole = new Role();
+            adminRole.setName("ADMIN");
+            Role savedUserRole = roleService.saveRole(userRole);
+            Role savedAdminRole = roleService.saveRole(adminRole);
+
+
             Account user = new Account();
             user.setName("Jonas");
             user.setSurname("Jonaitis");
             user.setUsername("user");
             user.setPassword("1122");
+            user.setRoles(Set.of(savedUserRole));
             Account savedUser = accountService.saveAccount(user);
 
             Account admin = new Account();
@@ -42,6 +54,7 @@ public class GenerateData implements CommandLineRunner {
             admin.setSurname("Petraitis");
             admin.setUsername("admin");
             admin.setPassword("1122");
+            admin.setRoles(Set.of(savedAdminRole, savedUserRole));
             Account savedAdmin = accountService.saveAccount(admin);
 
             Post post1 = new Post();
@@ -88,7 +101,6 @@ public class GenerateData implements CommandLineRunner {
             comment4.setAccountId(savedAdmin.getId());
             comment4.setPostId(savedPost2.getId());
             commentService.saveComment(comment4);
-            System.out.println("STOP");
         }
     }
 }

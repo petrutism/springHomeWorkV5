@@ -6,6 +6,7 @@ import lt.code.academy.springhomeworkv5.services.PostService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.SortDefault;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +23,7 @@ public class HomeController {
     }
 
     @GetMapping("/home")
-    public String home(Model model, @SortDefault(caseSensitive = false, sort = {"createdAt"}) Pageable pageable) {
+    public String home(Model model, @SortDefault(caseSensitive = false, sort = {"createdAt"}) Pageable pageable, Authentication authentication) {
         Page<Post> posts = postService.getAllPostsByPage(pageable);
         model.addAttribute("pageOfPosts", posts);
 
