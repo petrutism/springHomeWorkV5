@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head th:replace="~{fragments/fragments::head(#{lt.code.academy.blog.head.title})}"></head>
 <nav th:replace="~{fragments/fragments :: nav}"></nav>
@@ -42,8 +44,14 @@
                 </td>
                 <td th:text="${post.totalComments}"></td>
                 <td>
-                    <a th:href="@{/post/{id}/delete(id=${post.id})}" class="text-danger"><i
-                            class="bi bi-trash3-fill"></i></a>
+                    <div sec:authorize="isAuthenticated()">
+                        <div th:with="acc=${#authentication.principal.username}">
+                            <div th:if="${acc eq post.username || isAdmin}">
+                                <a th:href="@{/post/{id}/delete(id=${post.id})}" class="text-danger"><i
+                                        class="bi bi-trash3-fill"></i></a>
+                            </div>
+                        </div>
+                    </div>
                 </td>
             </tr>
             </tbody>
@@ -51,8 +59,10 @@
 
         <div class="row">
             <div class="col-2">
-                <a class="btn btn-outline-primary" th:href="@{/newpost}"
-                   th:text="#{lt.code.academy.blog.home.create.new.post}"></a>
+                <div sec:authorize="isAuthenticated()">
+                    <a class="btn btn-outline-primary" th:href="@{/newpost}"
+                       th:text="#{lt.code.academy.blog.home.create.new.post}"></a>
+                </div>
             </div>
             <nav aria-label="Page navigation example" class="col-8">
                 <ul class="pagination justify-content-center"

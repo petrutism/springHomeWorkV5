@@ -51,5 +51,4 @@ public class ApplicationConfig implements WebMvcConfigurer {
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addRedirectViewController("/", "/public/home");
     }
-
 }

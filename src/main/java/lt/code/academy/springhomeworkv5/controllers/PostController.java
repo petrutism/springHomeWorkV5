@@ -7,6 +7,9 @@ import lt.code.academy.springhomeworkv5.dto.Post;
 import lt.code.academy.springhomeworkv5.services.AccountService;
 import lt.code.academy.springhomeworkv5.services.CommentService;
 import lt.code.academy.springhomeworkv5.services.PostService;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -31,26 +34,32 @@ public class PostController {
     }
 
     @GetMapping("/public/post/{id}")
-    public String getPost(@PathVariable UUID id, Model model) {
+    public String getPost(@PathVariable UUID id, Model model, Authentication authentication) {
         Post post = postService.findPostById(id);
+        boolean isAdmin = false;
         Comment newComment = new Comment();
-        if (post != null) {
-            List<Comment> postComments = commentService.findAllCommentsByPostId(post.getId());
-            Account account = accountService.findOneByUsername("admin");
+        if (authentication != null) {
+            isAdmin = authentication.getAuthorities().stream()
+                    .anyMatch(r -> r.getAuthority().equals("ROLE_ADMIN"));
+            Account account = accountService.findOneByUsername(authentication.getName());
             newComment.setAccountId(account.getId());
             newComment.setPostId(post.getId());
+            model.addAttribute("isAdmin", isAdmin);
+        }
+        if (post != null) {
+            List<Comment> postComments = commentService.findAllCommentsByPostId(post.getId());
             model.addAttribute("post", post);
             model.addAttribute("comments", postComments);
             model.addAttribute("comment", newComment);
-
             return "post";
         } else {
             return "404";
         }
     }
+
     @GetMapping("/newpost")
-    public String createNewPost(Model model) {
-        Account account = accountService.findOneByUsername("user");
+    public String createNewPost(Model model, Authentication authentication) {
+        Account account = accountService.findOneByUsername(authentication.getName());
         if (account != null) {
             Post post = new Post();
             post.setAccountId(account.getId());
@@ -81,9 +90,11 @@ public class PostController {
     }
 
     @GetMapping("/post/{id}/update")
-    public String openEditPostForm(@PathVariable UUID id, Model model) {
+    public String openEditPostForm(@PathVariable UUID id, Model model, Authentication authentication) {
         Post post = postService.findPostById(id);
-        Account account = accountService.findOneByUsername("user");
+
+        Account account = accountService.findOneByUsername(authentication.getName());
+
         List<Comment> postComments = commentService.findAllCommentsByPostId(id);
         if (account != null) {
             model.addAttribute("post", post);

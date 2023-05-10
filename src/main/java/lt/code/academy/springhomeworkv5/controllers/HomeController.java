@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -24,8 +25,14 @@ public class HomeController {
 
     @GetMapping("/public/home")
     public String home(Model model, @SortDefault(caseSensitive = false, sort = {"createdAt"}) Pageable pageable, Authentication authentication) {
+        boolean isAdmin = false;
+        if(authentication != null) {
+            isAdmin = authentication.getAuthorities().stream()
+                    .anyMatch(r -> r.getAuthority().equals("ROLE_ADMIN"));
+        }
         Page<Post> posts = postService.getAllPostsByPage(pageable);
         model.addAttribute("pageOfPosts", posts);
+        model.addAttribute("isAdmin", isAdmin);
 
         return "home";
     }

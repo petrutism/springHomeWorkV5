@@ -4,6 +4,7 @@ import lt.code.academy.springhomeworkv5.dto.Account;
 import lt.code.academy.springhomeworkv5.dto.Comment;
 import lt.code.academy.springhomeworkv5.services.AccountService;
 import lt.code.academy.springhomeworkv5.services.CommentService;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -21,15 +22,15 @@ public class CommentController {
     }
 
     @PostMapping("/newcomment")
-    public String saveNewComment(Comment comment) {
+    public String saveNewComment(Comment comment, Authentication authentication) {
         if (comment.getBody() == null || comment.getBody().isBlank() || comment.getBody().isEmpty()) {
-            return "redirect:/post/" + comment.getPostId();
+            return "redirect:/public/post/" + comment.getPostId();
         }
-        Account account = accountService.findOneByUsername("user");
+        Account account = accountService.findOneByUsername(authentication.getName());
         comment.setAccountId(account.getId());
         commentService.saveComment(comment);
 
-        return "redirect:/post/" + comment.getPostId();
+        return "redirect:/public/post/" + comment.getPostId();
     }
 
     @PostMapping("/deletecomment")
@@ -37,7 +38,7 @@ public class CommentController {
         UUID postId = comment.getPostId();
         commentService.deleteCommentById(comment.getId());
 
-        return "redirect:/post/" + postId;
+        return "redirect:/public/post/" + postId;
     }
 
     @PostMapping("/editcomment")
@@ -45,12 +46,12 @@ public class CommentController {
         UUID postId = comment.getPostId();
         if (comment.getBody() == null || comment.getBody().isBlank()) {
             commentService.deleteCommentById(comment.getId());
-            return "redirect:/post/" + postId;
+            return "redirect:/public/post/" + postId;
         }
         comment.setUpdatedAt(LocalDateTime.now());
 
         commentService.saveComment(comment);
 
-        return "redirect:/post/" + comment.getPostId();
+        return "redirect:/public/post/" + comment.getPostId();
     }
 }
