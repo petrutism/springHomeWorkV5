@@ -47,11 +47,9 @@ public class ApplicationConfig implements WebMvcConfigurer {
         registry.addInterceptor(localeChangeInterceptor());
     }
 
-    //    kol kas naudojamas login kontroleris
-//    @Override
-//    public void addViewControllers(ViewControllerRegistry registry) {
-//        registry.addViewController("/login").setViewName("/login");
-//
-//    }
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addRedirectViewController("/", "/public/home");
+    }
 
 }

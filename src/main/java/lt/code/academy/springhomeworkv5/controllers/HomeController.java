@@ -22,7 +22,7 @@ public class HomeController {
         this.postService = postService;
     }
 
-    @GetMapping("/home")
+    @GetMapping("/public/home")
     public String home(Model model, @SortDefault(caseSensitive = false, sort = {"createdAt"}) Pageable pageable, Authentication authentication) {
         Page<Post> posts = postService.getAllPostsByPage(pageable);
         model.addAttribute("pageOfPosts", posts);

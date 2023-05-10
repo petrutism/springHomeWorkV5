@@ -30,7 +30,7 @@ public class PostController {
         this.commentService = commentService;
     }
 
-    @GetMapping("/post/{id}")
+    @GetMapping("/public/post/{id}")
     public String getPost(@PathVariable UUID id, Model model) {
         Post post = postService.findPostById(id);
         Comment newComment = new Comment();
@@ -69,7 +69,7 @@ public class PostController {
         }
         Post savedPost = postService.savePost(post);
 
-        return "redirect:/post/" + savedPost.getId();
+        return "redirect:/public/post/" + savedPost.getId();
     }
 
     @GetMapping("/post/{id}/delete")
@@ -77,7 +77,7 @@ public class PostController {
         commentService.deleteCommentsFromPost(commentService.findAllCommentsByPostId(id));
         postService.deletePostById(id);
 
-        return "redirect:/home";
+        return "redirect:/public/home";
     }
 
     @GetMapping("/post/{id}/update")
@@ -100,10 +100,10 @@ public class PostController {
         if (post.getTitle() == null || post.getTitle().isBlank() || post.getBody() == null || post.getBody().isBlank()) {
             commentService.deleteCommentsFromPost(commentService.findAllCommentsByPostId(id));
             postService.deletePostById(id);
-            return "redirect:/home";
+            return "redirect:/public/home";
         }
         postService.savePost(post);
 
-        return "redirect:/post/" + id;
+        return "redirect:/public/post/" + id;
     }
 }

@@ -23,14 +23,14 @@ public class RegisterController {
         this.roleService = roleService;
     }
 
-    @GetMapping("/register")
+    @GetMapping("/public/register")
     public String getRegisterPage(Model model) {
         Account account = new Account();
         model.addAttribute("account", account);
         return "register";
     }
 
-    @PostMapping("/register")
+    @PostMapping("/public/register")
     public String registerNewUser(@Valid Account account, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             return "register";

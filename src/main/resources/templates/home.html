@@ -34,7 +34,7 @@
                 <td class="col-2" th:text="${post.updatedAt}"></td>
                 <td th:text="${post.username}"></td>
                 <td>
-                    <a th:method="POST" th:href="@{/post/{id}(id=${post.id})}" th:text="${post.title}"></a>
+                    <a th:method="POST" th:href="@{/public/post/{id}(id=${post.id})}" th:text="${post.title}"></a>
                 </td>
                 <td>
             <span class="d-inline-block text-truncate" style="max-width: 300px;"
