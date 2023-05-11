@@ -25,7 +25,11 @@
      class="navbar navbar-expand-lg navbar-dark bg-dark mb-2">
     <div class="container align-middle">
         <a class="navbar-brand" th:text="#{lt.code.academy.blog.home.annotation}"></a>
+
+
+
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
                     <a class="nav-link active"
@@ -34,19 +38,25 @@
                        th:text="#{lt.code.academy.blog.home.home}"></a>
                 </li>
             </ul>
+
+            <div class="nav-item" sec:authorize="isAuthenticated()">
+                <a class="navbar-brand" th:text="#{lt.code.academy.home.work.blog.header.welcome} + ' ' + ${#authentication.principal.name}"></a>
+            </div>
+
             <div class="btn-group btn-group-sm"
                  role="group"
                  aria-label="Basic example"
                  style="margin-right: 10px">
                 <div sec:authorize="isAnonymous()">
-                <a th:text="#{lt.code.academy.blog.home.register}" th:href="@{/public/register}" type="button"
-                   class="btn btn-outline-primary"></a>
-                <a th:text="#{lt.code.academy.blog.home.login}" th:href="@{/login}" type="button"
-                   class="btn btn-outline-primary"></a>
+                    <a th:text="#{lt.code.academy.blog.home.register}" th:href="@{/public/register}" type="button"
+                       class="btn btn-outline-primary"></a>
+                    <a th:text="#{lt.code.academy.blog.home.login}" th:href="@{/login}" type="button"
+                       class="btn btn-outline-primary"></a>
                 </div>
+
                 <div sec:authorize="isAuthenticated()">
-                <a th:text="#{lt.code.academy.blog.home.logout}" th:href="@{/logout}" type="button"
-                   class="btn btn-outline-danger"></a>
+                    <a th:text="#{lt.code.academy.blog.home.logout}" th:href="@{/logout}" type="button"
+                       class="btn btn-outline-danger"></a>
                 </div>
             </div>
             <div>

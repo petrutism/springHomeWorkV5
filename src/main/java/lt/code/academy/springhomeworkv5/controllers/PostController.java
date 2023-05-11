@@ -9,7 +9,6 @@ import lt.code.academy.springhomeworkv5.services.CommentService;
 import lt.code.academy.springhomeworkv5.services.PostService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -36,17 +35,18 @@ public class PostController {
     @GetMapping("/public/post/{id}")
     public String getPost(@PathVariable UUID id, Model model, Authentication authentication) {
         Post post = postService.findPostById(id);
-        boolean isAdmin = false;
-        Comment newComment = new Comment();
-        if (authentication != null) {
-            isAdmin = authentication.getAuthorities().stream()
-                    .anyMatch(r -> r.getAuthority().equals("ROLE_ADMIN"));
-            Account account = accountService.findOneByUsername(authentication.getName());
-            newComment.setAccountId(account.getId());
-            newComment.setPostId(post.getId());
-            model.addAttribute("isAdmin", isAdmin);
-        }
         if (post != null) {
+            boolean isAdmin;
+            Comment newComment = new Comment();
+            if (authentication != null) {
+                isAdmin = authentication.getAuthorities().stream()
+                        .anyMatch(r -> r.getAuthority().equals("ROLE_ADMIN"));
+                Account principal = (Account) authentication.getPrincipal();
+                Account account = accountService.findAccountById(principal.getId());
+                newComment.setAccountId(account.getId());
+                newComment.setPostId(post.getId());
+                model.addAttribute("isAdmin", isAdmin);
+            }
             List<Comment> postComments = commentService.findAllCommentsByPostId(post.getId());
             model.addAttribute("post", post);
             model.addAttribute("comments", postComments);
@@ -57,9 +57,11 @@ public class PostController {
         }
     }
 
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @GetMapping("/newpost")
     public String createNewPost(Model model, Authentication authentication) {
-        Account account = accountService.findOneByUsername(authentication.getName());
+        Account principal = (Account) authentication.getPrincipal();
+        Account account = accountService.findAccountById(principal.getId());
         if (account != null) {
             Post post = new Post();
             post.setAccountId(account.getId());
@@ -71,16 +73,19 @@ public class PostController {
         return "404";
     }
 
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @PostMapping("/newpost")
     public String saveNewPost(@Valid Post post, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "post_new";
         }
+
         Post savedPost = postService.savePost(post);
 
         return "redirect:/public/post/" + savedPost.getId();
     }
 
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @GetMapping("/post/{id}/delete")
     public String deletePostById(@PathVariable UUID id) {
         commentService.deleteCommentsFromPost(commentService.findAllCommentsByPostId(id));
@@ -89,32 +94,42 @@ public class PostController {
         return "redirect:/public/home";
     }
 
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @GetMapping("/post/{id}/update")
     public String openEditPostForm(@PathVariable UUID id, Model model, Authentication authentication) {
         Post post = postService.findPostById(id);
+        if (post != null) {
+            Account principal = (Account) authentication.getPrincipal();
+            Account account = accountService.findAccountById(principal.getId());
 
-        Account account = accountService.findOneByUsername(authentication.getName());
+            if (account != null && post.getAccountId().equals(account.getId())) {
+                List<Comment> postComments = commentService.findAllCommentsByPostId(id);
+                model.addAttribute("post", post);
+                model.addAttribute("comments", postComments);
 
-        List<Comment> postComments = commentService.findAllCommentsByPostId(id);
-        if (account != null) {
-            model.addAttribute("post", post);
-            model.addAttribute("comments", postComments);
-
-            return "post_edit";
+                return "post_edit";
+            } else {
+                return "pig_error";
+            }
         }
         return "404";
     }
 
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @PostMapping("/post/{id}/save")
-    public String saveEditedPost(@PathVariable UUID id, Post post) {
-        post.setUpdatedAt(LocalDateTime.now());
-        if (post.getTitle() == null || post.getTitle().isBlank() || post.getBody() == null || post.getBody().isBlank()) {
-            commentService.deleteCommentsFromPost(commentService.findAllCommentsByPostId(id));
-            postService.deletePostById(id);
-            return "redirect:/public/home";
+    public String saveEditedPost(@PathVariable UUID id, Post post, Authentication authentication) {
+        Account principal = (Account) authentication.getPrincipal();
+        Account account = accountService.findAccountById(principal.getId());
+        if (account != null && post.getAccountId().equals(account.getId())) {
+            if (post.getTitle() == null || post.getTitle().isBlank() || post.getBody() == null || post.getBody().isBlank()) {
+                commentService.deleteCommentsFromPost(commentService.findAllCommentsByPostId(id));
+                postService.deletePostById(id);
+                return "redirect:/public/home";
+            }
+            post.setUpdatedAt(LocalDateTime.now());
+            postService.savePost(post);
+            return "redirect:/public/post/" + id;
         }
-        postService.savePost(post);
-
-        return "redirect:/public/post/" + id;
+        return "pig_error";
     }
 }

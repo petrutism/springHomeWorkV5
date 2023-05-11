@@ -16,30 +16,30 @@
                 <div th:if="${post.updatedAt} ne null">
                     <h6 th:text="#{lt.code.academy.blog.post.updated} + ' ' + ${post.updatedAt}"></h6>
                 </div>
-                <h4 style="max-height: 300px; overflow: auto" th:text="${post.body}"></h4>
+                <hr/>
+                <h4 style="max-height: 400px; overflow: auto" th:text="${post.body}"></h4>
             </div>
-            <div sec:authorize="isAuthenticated()">
-                <div th:with="acc=${#authentication.principal.username}"
-                     class="btn-group"
-                     role="group"
-                     aria-label="Basic example"
-                     style="margin-top: 10px">
+            <div sec:authorize="isAuthenticated()"
+                 class="btn-group"
+                 role="group"
+                 aria-label="Basic example"
+                 style="margin-top: 10px">
 
-                    <form th:if="${acc eq post.username}"
-                          th:action="@{/post/{id}/update(id=${post.id})}"
-                          method="GET">
-                        <button type="submit"
-                                class="btn btn-primary btn-sm"
-                                th:text="#{lt.code.academy.blog.post.edit.button}"></button>
-                    </form>
+                <form th:if="${#authentication.principal.id eq post.accountId}"
+                      th:action="@{/post/{id}/update(id=${post.id})}"
+                      method="GET">
+                    <button type="submit"
+                            class="btn btn-primary btn-sm"
+                            th:text="#{lt.code.academy.blog.post.edit.button}"></button>
+                </form>
 
-                    <form th:if="${acc eq post.username || isAdmin}"
-                          th:action="@{/post/{id}/delete(id=${post.id})}">
-                        <button type="submit"
-                                class="btn btn-danger btn-sm"
-                                th:text="#{lt.code.academy.blog.post.delete.button}"></button>
-                    </form>
-                </div>
+                <form th:if="${#authentication.principal.id eq post.accountId || isAdmin}"
+                      th:action="@{/post/{id}/delete(id=${post.id})}">
+                    <button type="submit"
+                            class="btn btn-danger btn-sm"
+                            th:text="#{lt.code.academy.blog.post.delete.button}"></button>
+                </form>
+
 
             </div>
             <hr/>
@@ -89,70 +89,68 @@
                          role="group"
                          aria-label="Basic example"
                          style="margin-top: 10px">
-                        <div th:with="acc=${#authentication.principal.username}">
-                            <button th:if="${acc eq comment.username}" type="button"
-                                    class="btn btn-outline-primary btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#editComment"
-                                    th:data-bs-comment-id="${comment.id}"
-                                    th:data-bs-comment-body="${comment.body}"
-                                    th:data-bs-comment-createdAt="${comment.createdAt}"
-                                    th:data-bs-comment-updatedAt="${comment.updatedAt}"
-                                    th:data-bs-comment-accountId="${comment.accountId}"
-                                    th:data-bs-comment-postId="${comment.postId}"
-                                    th:data-bs-comment-username="${comment.username}"
-                                    th:text="#{lt.code.academy.blog.post.comment.edit.button}"
-                            ></button>
-                            <form class="modal fade" id="editComment" tabindex="-1" aria-labelledby="exampleModalLabel"
-                                  aria-hidden="true"
-                                  th:action="@{/editcomment}"
-                                  th:object="${comment}"
-                                  method="POST">
-                                <input type="hidden" id="commentID" name="id"/>
-                                <input type="hidden" id="commentCreatedAt" name="createdAt"/>
-                                <input type="hidden" id="commentUpdatedAt" name="updatedAt"/>
-                                <input type="hidden" id="commentAccountId" name="accountId"/>
-                                <input type="hidden" id="commentPostId" name="postId"/>
-                                <input type="hidden" id="commentUsername" name="username"/>
 
-                                <div class="modal-dialog modal-dialog-centered">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title"
-                                                id="exampleModalLabel"
-                                                th:text="#{lt.code.academy.blog.post.comment.edit.modal.title}"></h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                    aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
+                        <button th:if="${#authentication.principal.id eq comment.accountId}" type="button"
+                                class="btn btn-outline-primary btn-sm" data-bs-toggle="modal"
+                                data-bs-target="#editComment"
+                                th:data-bs-comment-id="${comment.id}"
+                                th:data-bs-comment-body="${comment.body}"
+                                th:data-bs-comment-createdAt="${comment.createdAt}"
+                                th:data-bs-comment-updatedAt="${comment.updatedAt}"
+                                th:data-bs-comment-accountId="${comment.accountId}"
+                                th:data-bs-comment-postId="${comment.postId}"
+                                th:data-bs-comment-username="${comment.username}"
+                                th:text="#{lt.code.academy.blog.post.comment.edit.button}"
+                        ></button>
+                        <form class="modal fade" id="editComment" tabindex="-1" aria-labelledby="exampleModalLabel"
+                              aria-hidden="true"
+                              th:action="@{/editcomment}"
+                              th:object="${comment}"
+                              method="POST">
+                            <input type="hidden" id="commentID" name="id"/>
+                            <input type="hidden" id="commentCreatedAt" name="createdAt"/>
+                            <input type="hidden" id="commentUpdatedAt" name="updatedAt"/>
+                            <input type="hidden" id="commentAccountId" name="accountId"/>
+                            <input type="hidden" id="commentPostId" name="postId"/>
+                            <input type="hidden" id="commentUsername" name="username"/>
+
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title"
+                                            id="exampleModalLabel"
+                                            th:text="#{lt.code.academy.blog.post.comment.edit.modal.title}"></h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
                                         <textarea th:field="*{body}" class="form-control" id="commentBody"
                                                   aria-describedby="editCommentBodyHelp"
                                                   style="height: 100px"></textarea>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button"
-                                                    class="btn btn-secondary"
-                                                    data-bs-dismiss="modal"
-                                                    th:text="#{lt.code.academy.blog.post.comment.edit.modal.close.button}"></button>
-                                            <button type="submit"
-                                                    class="btn btn-primary"
-                                                    th:text="#{lt.code.academy.blog.post.comment.edit.modal.save.button}"></button>
-                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button"
+                                                class="btn btn-secondary"
+                                                data-bs-dismiss="modal"
+                                                th:text="#{lt.code.academy.blog.post.comment.edit.modal.close.button}"></button>
+                                        <button type="submit"
+                                                class="btn btn-primary"
+                                                th:text="#{lt.code.academy.blog.post.comment.edit.modal.save.button}"></button>
                                     </div>
                                 </div>
-                            </form>
-                        </div>
-                        <div th:with="acc=${#authentication.principal.username}">
-                            <form th:if="${acc eq comment.username || acc eq post.username || isAdmin}" th:action="@{/deletecomment}"
-                                  th:object="${comment}"
-                                  method="POST">
-                                <input type="hidden" th:field="*{postId}"/>
-                                <input type="hidden" th:value="${comment.id}" id="idDelete" name="id"/>
-                                <button type="submit"
-                                        class="btn btn-outline-danger btn-sm"
-                                        th:text="#{lt.code.academy.blog.post.comment.delete.button}"
-                                ></button>
-                            </form>
-                        </div>
+                            </div>
+                        </form>
+                        <form th:if="${#authentication.principal.id eq comment.accountId || #authentication.principal.id eq post.accountId || isAdmin}"
+                              th:action="@{/deletecomment}"
+                              th:object="${comment}"
+                              method="POST">
+                            <input type="hidden" th:field="*{postId}"/>
+                            <input type="hidden" th:value="${comment.id}" id="idDelete" name="id"/>
+                            <button type="submit"
+                                    class="btn btn-outline-danger btn-sm"
+                                    th:text="#{lt.code.academy.blog.post.comment.delete.button}"
+                            ></button>
+                        </form>
                     </div>
                     <br/>
                 </div>

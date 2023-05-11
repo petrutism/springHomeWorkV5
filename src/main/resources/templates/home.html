@@ -44,12 +44,10 @@
                 </td>
                 <td th:text="${post.totalComments}"></td>
                 <td>
-                    <div sec:authorize="isAuthenticated()">
-                        <div th:with="acc=${#authentication.principal.username}">
-                            <div th:if="${acc eq post.username || isAdmin}">
-                                <a th:href="@{/post/{id}/delete(id=${post.id})}" class="text-danger"><i
-                                        class="bi bi-trash3-fill"></i></a>
-                            </div>
+                    <div sec:authorize="hasAnyRole('ADMIN', 'USER')">
+                        <div th:if="${#authentication.principal.id eq post.accountId || isAdmin}">
+                            <a th:href="@{/post/{id}/delete(id=${post.id})}" class="text-danger"><i
+                                    class="bi bi-trash3-fill"></i></a>
                         </div>
                     </div>
                 </td>
@@ -59,7 +57,7 @@
 
         <div class="row">
             <div class="col-2">
-                <div sec:authorize="isAuthenticated()">
+                <div sec:authorize="hasAnyRole('ADMIN', 'USER')">
                     <a class="btn btn-outline-primary" th:href="@{/newpost}"
                        th:text="#{lt.code.academy.blog.home.create.new.post}"></a>
                 </div>
