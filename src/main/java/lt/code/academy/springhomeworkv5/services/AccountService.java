@@ -45,6 +45,5 @@ public class AccountService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         AccountEntity accountEntity =  accountRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(String.format("User %s not found...", username)));
         return Account.convert(accountEntity);
-
     }
 }

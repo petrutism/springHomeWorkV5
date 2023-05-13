@@ -27,7 +27,6 @@ public class GenerateData implements CommandLineRunner {
         this.commentService = commentService;
         this.roleService = roleService;
     }
-
     @Override
     public void run(String... args) {
         List<Account> accounts = accountService.getAll();
@@ -40,25 +39,24 @@ public class GenerateData implements CommandLineRunner {
             Role savedUserRole = roleService.saveRole(userRole);
             Role savedAdminRole = roleService.saveRole(adminRole);
 
-
             Account user = new Account();
-            user.setName("Jonas");
-            user.setSurname("Jonaitis");
+            user.setName("Useris");
+            user.setSurname("Uservavičius");
             user.setUsername("user");
             user.setPassword("1122");
             user.setRoles(Set.of(savedUserRole));
             Account savedUser = accountService.saveAccount(user);
 
             Account admin = new Account();
-            admin.setName("Petras");
-            admin.setSurname("Petraitis");
+            admin.setName("Adminas");
+            admin.setSurname("Administratorius");
             admin.setUsername("admin");
             admin.setPassword("1122");
             admin.setRoles(Set.of(savedAdminRole, savedUserRole));
             Account savedAdmin = accountService.saveAccount(admin);
 
             Post post1 = new Post();
-            post1.setTitle("Pirmo posto pavadinimas");
+            post1.setTitle("1. Pirmo userio posto pavadinimas");
             post1.setBody("""
                     Mergina turguje perka papūgiuką, pasisodina jį ant peties ir sako:
                     - Na, kvailiuk, įdomu ar moki kalbėt?
@@ -69,7 +67,7 @@ public class GenerateData implements CommandLineRunner {
             Post savedPost1 = postService.savePost(post1);
 
             Post post2 = new Post();
-            post2.setTitle("Antro posto pavadinimas");
+            post2.setTitle("2. Pirmo admino posto pavadinimas");
             post2.setBody("""
                     Nueina senutė pas ginekologą. Šis ją apžiūri ir stebėdamasis sako:
                     - Senute, jūs nėščia! Kaip jūsų amžiaus moteriškė...?

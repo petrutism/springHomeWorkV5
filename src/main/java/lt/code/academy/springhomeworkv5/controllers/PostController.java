@@ -87,11 +87,29 @@ public class PostController {
 
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @GetMapping("/post/{id}/delete")
-    public String deletePostById(@PathVariable UUID id) {
-        commentService.deleteCommentsFromPost(commentService.findAllCommentsByPostId(id));
-        postService.deletePostById(id);
+    public String deletePostById(@PathVariable UUID id, Authentication authentication) {
+        Post post = postService.findPostById(id);
 
-        return "redirect:/public/home";
+        if (post != null) {
+            if (authentication.getAuthorities().stream()
+                    .anyMatch(r -> r.getAuthority().equals("ROLE_ADMIN"))) {
+                commentService.deleteCommentsFromPost(commentService.findAllCommentsByPostId(id));
+                postService.deletePostById(id);
+
+                return "redirect:/public/home";
+            } else {
+                Account principal = (Account) authentication.getPrincipal();
+                Account account = accountService.findAccountById(principal.getId());
+                if (account != null && post.getAccountId().equals(account.getId())) {
+                    commentService.deleteCommentsFromPost(commentService.findAllCommentsByPostId(id));
+                    postService.deletePostById(id);
+                    return "redirect:/public/home";
+                } else {
+                    return "pig_error";
+                }
+            }
+        }
+        return "404";
     }
 
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
