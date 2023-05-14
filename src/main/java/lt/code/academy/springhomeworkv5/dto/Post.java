@@ -16,7 +16,6 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Post {
-
     private UUID id;
     @NotBlank
     @Size(min = 5, max = 20)
