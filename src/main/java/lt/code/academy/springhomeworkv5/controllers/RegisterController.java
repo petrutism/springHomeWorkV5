@@ -27,26 +27,27 @@ public class RegisterController {
     public String getRegisterPage(Model model) {
         Account account = new Account();
         model.addAttribute("account", account);
+
         return "register";
     }
 
     @PostMapping("/public/register")
     public String registerNewUser(@Valid Account account, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
+
             return "register";
         }
         List<Account> accounts = accountService.getAll();
         for (Account a : accounts) {
-            if (a.getUsername().equals(account.getUsername())){
+            if (a.getUsername().equals(account.getUsername())) {
                 Account acc = new Account();
                 boolean usernameRegistered = true;
                 model.addAttribute("account", acc);
                 model.addAttribute("usernameRegistered", usernameRegistered);
+
                 return "register";
             }
         }
-
-
         String messageKey = "lt.code.academy.blog.account.create.success.message";
         account.setRoles(Set.of(roleService.findByName("USER")));
         accountService.saveAccount(account);

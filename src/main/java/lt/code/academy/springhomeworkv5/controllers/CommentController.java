@@ -49,7 +49,6 @@ public class CommentController {
             return "redirect:/public/post/" + postId;
         }
         comment.setUpdatedAt(LocalDateTime.now());
-
         commentService.saveComment(comment);
 
         return "redirect:/public/post/" + comment.getPostId();

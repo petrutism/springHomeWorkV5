@@ -24,7 +24,6 @@
                  role="group"
                  aria-label="Basic example"
                  style="margin-top: 10px">
-
                 <form th:if="${#authentication.principal.id eq post.accountId}"
                       th:action="@{/post/{id}/update(id=${post.id})}"
                       method="GET">
@@ -32,15 +31,12 @@
                             class="btn btn-primary btn-sm"
                             th:text="#{lt.code.academy.blog.post.edit.button}"></button>
                 </form>
-
                 <form th:if="${#authentication.principal.id eq post.accountId || isAdmin}"
                       th:action="@{/post/{id}/delete(id=${post.id})}">
                     <button type="submit"
                             class="btn btn-danger btn-sm"
                             th:text="#{lt.code.academy.blog.post.delete.button}"></button>
                 </form>
-
-
             </div>
             <hr/>
             <form sec:authorize="isAuthenticated()"

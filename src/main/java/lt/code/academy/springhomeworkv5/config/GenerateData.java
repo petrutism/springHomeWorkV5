@@ -27,6 +27,7 @@ public class GenerateData implements CommandLineRunner {
         this.commentService = commentService;
         this.roleService = roleService;
     }
+
     @Override
     public void run(String... args) {
         List<Account> accounts = accountService.getAll();
@@ -58,9 +59,16 @@ public class GenerateData implements CommandLineRunner {
             Post post1 = new Post();
             post1.setTitle("1. Pirmo userio posto pavadinimas");
             post1.setBody("""
-                    Mergina turguje perka papūgiuką, pasisodina jį ant peties ir sako:
-                    - Na, kvailiuk, įdomu ar moki kalbėt?
-                    - Kalbėt tai aš moku. O tu, dūra, skraidyt moki?""");
+                    Kašalotas (Physeter catodon arba Physeter macrocephalus) - tai
+                    žinduolis, visą laiką gyvenantis vandenyje, vienintelis
+                    banginių (Cetacea) būriui piklausančios kašalotinių
+                    (Physeteridae) šeimos atstovas. Kašalotas yra ne tik vienas
+                    iš didžiausių pasaulyje plėšrųjų žinduolių, bet ir
+                    triukšmingiausias gyvūnas pasaulyje, jo spragsėjimas, gali
+                    pasiekti net 235 decibelų, tokio garso vibracijos gali pražudyti
+                    žmogų. Palyginimui, garsus roko koncertas skleidžia tik maždaug
+                    115 decibelų garsą, o lėktuvo variklis – 140 decibelų garsą, o
+                    žmogaus kalbėjimo metu yra skleidžiamas 60-65 decibelų stiprumo garsas.""");
 
             post1.setAccountId(savedUser.getId());
             post1.setUsername(savedUser.getUsername());
@@ -69,9 +77,14 @@ public class GenerateData implements CommandLineRunner {
             Post post2 = new Post();
             post2.setTitle("2. Pirmo admino posto pavadinimas");
             post2.setBody("""
-                    Nueina senutė pas ginekologą. Šis ją apžiūri ir stebėdamasis sako:
-                    - Senute, jūs nėščia! Kaip jūsų amžiaus moteriškė...?
-                    - Vis tie paaugliai. Viską jiems papasakok, viską jiems parodyk, duok pabandyt...""");
+                    Kašalotai yra apie 11-20 m ilgio ir iki 20-57 tonų svorio,
+                    ką tik gimęs jauniklis sveria apie toną ir būna net 4-4,5 metrų ilgio.
+                    Galva kašalotų labai didelė, jos priekinė dalis buka, beveik kvadratinė,
+                    pilna skystų riebalų, kurie padeda išlaikyti plūdrumą,
+                    t.y. gebėjimą plaukti vandens paviršiuje. Ieškodamas maisto
+                    kašalotas paneria labai giliai, teigiama kad.. į didesnį kaip
+                    3000 m gylį, kuriame gaudo galvakojus moliuskus,
+                    kurie ir yra pagrindinis jų maistas.""");
             post2.setAccountId(savedAdmin.getId());
             post2.setUsername(savedAdmin.getUsername());
             Post savedPost2 = postService.savePost(post2);

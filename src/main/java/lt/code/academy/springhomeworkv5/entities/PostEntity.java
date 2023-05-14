@@ -3,12 +3,10 @@ package lt.code.academy.springhomeworkv5.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
-import lt.code.academy.springhomeworkv5.dto.Comment;
 import lt.code.academy.springhomeworkv5.dto.Post;
 import lt.code.academy.springhomeworkv5.services.AccountService;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.UUID;
 
 @Entity

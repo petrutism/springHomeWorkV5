@@ -30,7 +30,7 @@ public class CommentEntity {
     @Column
     private LocalDateTime updatedAt;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "account_id")
     private AccountEntity account;
 

@@ -51,8 +51,10 @@ public class PostController {
             model.addAttribute("post", post);
             model.addAttribute("comments", postComments);
             model.addAttribute("comment", newComment);
+
             return "post";
         } else {
+
             return "404";
         }
     }
@@ -70,6 +72,7 @@ public class PostController {
 
             return "post_new";
         }
+
         return "404";
     }
 
@@ -79,7 +82,6 @@ public class PostController {
         if (bindingResult.hasErrors()) {
             return "post_new";
         }
-
         Post savedPost = postService.savePost(post);
 
         return "redirect:/public/post/" + savedPost.getId();
@@ -105,10 +107,12 @@ public class PostController {
                     postService.deletePostById(id);
                     return "redirect:/public/home";
                 } else {
+
                     return "pig_error";
                 }
             }
         }
+
         return "404";
     }
 
