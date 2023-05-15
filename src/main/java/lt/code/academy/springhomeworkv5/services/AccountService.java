@@ -33,10 +33,12 @@ public class AccountService implements UserDetailsService {
     }
 
     public Account findOneByUsername(String username) {
+
         return Account.convert(accountRepository.findOneByUsername(username));
     }
 
     public Account findAccountById(UUID id) {
+
         return accountRepository.findById(id)
                 .map(Account::convert)
                 .orElse(null);
@@ -44,6 +46,7 @@ public class AccountService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         AccountEntity accountEntity =  accountRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(String.format("User %s not found...", username)));
+
         return Account.convert(accountEntity);
     }
 }
